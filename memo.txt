@@ -1,0 +1,4 @@
+メモ
+
+SRL例：
+from k=n do skip loop k-=1 from j=0 do skip loop if x[j]>x[k] then x[j] -= 1 else skip fi x[j]>=x[k] j+=1 until j=k j-=k until k=0
