@@ -1,31 +1,4 @@
 open Syntax
-(*let rec srlc b =
-  let rec srlcc c (la,lb,lc,ld) =
-    match c with
-    | SCon(b1,b2) -> (srlcc b1 (la,lb,la^"0",la^"1"))
-                     @(srlcc b2 (la^"0",la^"1",lc,ld))
-                   
-    | SStep(a) -> [RBlk2(Label lb,RFrom(Label la),a,RGoto(Label lc))]
-                  @[RBlk1(Label lc,RFrom(Label lb),RGoto(Label ld))]
-                
-    | SIf(e1,b1,b2,e2) ->
-       [RBlk1(Label lb,RFrom(Label la),RIf(e1,Label (la^"2"),Label (la^"4")))]
-       @(srlcc b1 (lb,la^"2",la^"3",lc))
-       @(srlcc b2 (lb,la^"4",la^"5",lc))
-       @[RBlk1(Label lc,RFi(e2,Label (la^"3"),Label (la^"5")),RGoto(Label ld))]
-      
-    | SFrom(e1,b1,b2,e2) ->
-       [RBlk1(Label lb,RFi(e1,Label la,Label (la^"9")),RGoto(Label (la^"6")))]
-       @(srlcc b1 (lb,la^"6",la^"7",lc))
-       @(srlcc b2 (lc,la^"8",la^"9",lb))
-       @[RBlk1(Label lc,RFrom(Label (la^"7")),RIf(e2,Label ld,Label (la^"8")))]
-  in
-  RLBLK([RBlk1(Label "0",REntry,RGoto(Label "1"))]
-      
-        @(srlcc b ("0","1","2","3"))
-        @[RBlk1(Label "3",RFrom(Label "2"),RExit)])
- *)
-
 let rec srlc b =
   let max2 a b = if (int_of_string a)>(int_of_string b) then a else b
   in
