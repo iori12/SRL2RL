@@ -2,3 +2,108 @@
 
 SRL例：
 from k=n do skip loop k-=1 from j=0 do skip loop if x[j]>x[k] then x[j] -= 1 else skip fi x[j]>=x[k] j+=1 until j=k j-=k until k=0
+
+実行例：
+SRL:
+from x = 0 do skip loop x += 1 until x = 10 
+
+SRL inversion:
+from x = 10 do skip loop x -= 1 until x = 0 
+
+RL:
+1: 	entry
+	goto 2
+2: 	fi x = 0 from 1 else 8
+	goto 5
+5: 	from 2
+	skip
+	goto 6
+6: 	from 5
+	goto 3
+7: 	from 3
+	x += 1
+	goto 8
+8: 	from 7
+	goto 2
+3: 	from 6
+	if x = 10 goto 4 else 7
+4: 	from 3
+	exit
+
+RL invertsion:
+4: 	entry
+	goto 3
+3: 	fi x = 10 from 4 else 7
+	goto 6
+8: 	from 2
+	goto 7
+7: 	from 8
+	x -= 1
+	goto 3
+6: 	from 3
+	goto 5
+5: 	from 6
+	skip
+	goto 2
+2: 	from 5
+	if x = 0 goto 1 else 8
+1: 	from 2
+	exit
+SRL:
+from k = n do skip loop k -= 1 from j = 0 do skip loop if x[j] > x[k] then x[j] -= 1 else skip fi x[j] >= x[k]  j += 1 until j = k  j -= k until k = 0 
+
+SRL inversion:
+from k = 0 do skip loop j += k from j = k do skip loop j -= 1 if x[j] >= x[k] then x[j] += 1 else skip fi x[j] > x[k]  until j = 0  k += 1 until k = n 
+
+RL:
+1: 	entry
+	goto 2
+2: 	fi k = n from 1 else 8
+	goto 5
+5: 	from 2
+	skip
+	goto 6
+6: 	from 5
+	goto 3
+7: 	from 3
+	k -= 1
+	goto 11
+11: 	from 7
+	goto 15
+15: 	fi j = 0 from 11 else 46
+	goto 34
+34: 	from 15
+	skip
+	goto 38
+38: 	from 34
+	goto 19
+42: 	from 19
+	if x[j] > x[k] goto 107 else 153
+107: 	from 42
+	x[j] -= 1
+	goto 130
+130: 	from 107
+	goto 65
+153: 	from 42
+	skip
+	goto 176
+176: 	from 153
+	goto 65
+65: 	fi x[j] >= x[k] from 130 else 176
+	goto 88
+88: 	from 65
+	j += 1
+	goto 46
+46: 	from 88
+	goto 15
+19: 	from 38
+	if j = k goto 23 else 42
+23: 	from 19
+	j -= k
+	goto 8
+8: 	from 23
+	goto 2
+3: 	from 6
+	if k = 0 goto 4 else 7
+4: 	from 3
+	exit
