@@ -13,23 +13,23 @@ let rec srlc b =
     | SCon(b1,b2) -> (srlcc b1 (la,lb,pl x la,pl x lb))
                      @(srlcc b2 (pl x la,pl x lb,lc,ld))
                    
-    | SStep(a) -> [RBlk2(Label lb,RFrom(Label la),a,RGoto(Label lc))]
-                  @[RBlk1(Label lc,RFrom(Label lb),RGoto(Label ld))]
+    | SStep(a) -> [RBlk(Label lb,RFrom(Label la),[a],RGoto(Label lc))]
+                  @[RBlk(Label lc,RFrom(Label lb),[],RGoto(Label ld))]
                 
     | SIf(e1,b1,b2,e2) ->
-       [RBlk1(Label lb,RFrom(Label la),RIf(e1,Label (pl x la),Label (pl x lc)))]
+       [RBlk(Label lb,RFrom(Label la),[],RIf(e1,Label (pl x la),Label (pl x lc)))]
        @(srlcc b1 (lb,pl x la,pl x lb,lc))
        @(srlcc b2 (lb,pl x lc,pl x ld,lc))
-       @[RBlk1(Label lc,RFi(e2,Label (pl x lb),Label (pl x ld)),RGoto(Label ld))]
+       @[RBlk(Label lc,RFi(e2,Label (pl x lb),Label (pl x ld)),[],RGoto(Label ld))]
       
     | SFrom(e1,b1,b2,e2) ->
-       [RBlk1(Label lb,RFi(e1,Label la,Label (pl x ld)),RGoto(Label (pl x la)))]
+       [RBlk(Label lb,RFi(e1,Label la,Label (pl x ld)),[],RGoto(Label (pl x la)))]
        @(srlcc b1 (lb,pl x la,pl x lb,lc))
        @(srlcc b2 (lc,pl x lc,pl x ld,lb))
-       @[RBlk1(Label lc,RFrom(Label (pl x lb)),RIf(e2,Label ld,Label (pl x lc)))]
+       @[RBlk(Label lc,RFrom(Label (pl x lb)),[],RIf(e2,Label ld,Label (pl x lc)))]
   in
-  RLBLK([RBlk1(Label "1",REntry,RGoto(Label "2"))]
+  RLBLK([RBlk(Label "1",REntry,[],RGoto(Label "2"))]
         @(srlcc b ("1","2","3","4"))
-        @[RBlk1(Label "4",RFrom(Label "3"),RExit)])
+        @[RBlk(Label "4",RFrom(Label "3"),[],RExit)])
  
    

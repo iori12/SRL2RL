@@ -25,7 +25,7 @@ type exp =
   | ETime of exp * otime * exp
   | ETop of var
   | EEmpty of var
-
+            
 type step =
   | Plus_Eq of var * oplus * exp
   | Plus_In of var * exp * oplus * exp
@@ -58,13 +58,9 @@ type from =
   | REntry
 
 type rlblk =
-  | RBlk1 of label * from  * jump
-  | RBlk2 of label * from * step * jump
+  | RBlk of label * from * step list * jump
 
 type rl = RLBLK of rlblk list 
-
-                         
-
 
 
   
