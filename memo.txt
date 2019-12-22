@@ -107,3 +107,73 @@ RL:
 	if k = 0 goto 4 else 7
 4: 	from 3
 	exit
+
+RLBLK
+ [RBlk (Label "1", REntry, [], RGoto (Label "2"));
+  RBlk (Label "2",
+   RFi (ETime (EVar (Var "x"), Equal, EConst 0), Label "1", Label "8"), 
+   [], RGoto (Label "5"));
+  RBlk (Label "5", RFrom (Label "2"), [Skip], RGoto (Label "6"));
+  RBlk (Label "6", RFrom (Label "5"), [], RGoto (Label "3"));
+  RBlk (Label "7", RFrom (Label "3"), [Plus_Eq (Var "x", Plus, EConst 1)],
+   RGoto (Label "8"));
+  RBlk (Label "8", RFrom (Label "7"), [], RGoto (Label "2"));
+  RBlk (Label "3", RFrom (Label "6"), [],
+   RIf (ETime (EVar (Var "x"), Equal, EConst 10), Label "4", Label "7"));
+  RBlk (Label "4", RFrom (Label "3"), [], RExit)]
+
+[Syntax.RBlk (Syntax.Label "1", Syntax.REntry, [],
+  Syntax.RGoto (Syntax.Label "2"));
+ Syntax.RBlk (Syntax.Label "2",
+  Syntax.RFi
+   (Syntax.ETime (Syntax.EVar (Syntax.Var "x"), Syntax.Equal,
+     Syntax.EConst 0),
+   Syntax.Label "1", Syntax.Label "8"),
+  [], Syntax.RGoto (Syntax.Label "3"));
+ Syntax.RBlk (Syntax.Label "3", Syntax.RFrom (Syntax.Label "2"),
+  [Syntax.Skip], Syntax.RGoto (Syntax.Label "6"));
+ Syntax.RBlk (Syntax.Label "6", Syntax.RFrom (Syntax.Label "3"), [],
+  Syntax.RGoto (Syntax.Label "3"));
+ Syntax.RBlk (Syntax.Label "7", Syntax.RFrom (Syntax.Label "3"),
+  [Syntax.Plus_Eq (Syntax.Var "x", Syntax.Plus, Syntax.EConst 1)],
+  Syntax.RGoto (Syntax.Label "8"));
+ Syntax.RBlk (Syntax.Label "8", Syntax.RFrom (Syntax.Label "7"), [],
+  Syntax.RGoto (Syntax.Label "2"));
+ Syntax.RBlk (Syntax.Label "3", Syntax.RFrom (Syntax.Label "6"), [],
+  Syntax.RIf
+   (Syntax.ETime (Syntax.EVar (Syntax.Var "x"), Syntax.Equal,
+     Syntax.EConst 10),
+   Syntax.Label "4", Syntax.Label "7"));
+ Syntax.RBlk (Syntax.Label "4", Syntax.RFrom (Syntax.Label "3"), [],
+  Syntax.RExit)]
+
+RLBLK
+ [RBlk (Label "1", REntry, [], RGoto (Label "2"));
+  RBlk (Label "2",
+   RFi (ETime (EVar (Var "x"), Equal, EConst 0), Label "1", Label "l6"), 
+   [], RGoto (Label "l3"));
+  RBlk (Label "l3", RFrom (Label "2"), [Skip], RGoto (Label "l4"));
+  RBlk (Label "l4", RFrom (Label "l3"), [], RGoto (Label "l7"));
+  RBlk (Label "l5", RFrom (Label "l7"), [Plus_Eq (Var "x", Plus, EConst 1)],
+   RGoto (Label "l6"));
+  RBlk (Label "l6", RFrom (Label "l5"), [], RGoto (Label "2"));
+  RBlk (Label "l7", RFrom (Label "l4"), [],
+   RIf (ETime (EVar (Var "x"), Equal, EConst 10), Label "l8", Label "l5"));
+  RBlk (Label "l8", RFrom (Label "l7"), [], RExit)]
+
+SFrom (ETime (EVar (Var "k"), Equal, EVar (Var "n")), SStep Skip,
+ SCon (SStep (Plus_Eq (Var "k", Minus, EConst 1)),
+  SCon
+   (SFrom (ETime (EVar (Var "j"), Equal, EConst 0), SStep Skip,
+     SCon
+      (SIf
+        (ETime (EIn (Var "x", EVar (Var "j")), Greater,
+          EIn (Var "x", EVar (Var "k"))),
+        SStep (Plus_In (Var "x", EVar (Var "j"), Minus, EConst 1)),
+        SStep Skip,
+        ETime (EIn (Var "x", EVar (Var "j")), Greater_Eq,
+         EIn (Var "x", EVar (Var "k")))),
+      SStep (Plus_Eq (Var "j", Plus, EConst 1))),
+     ETime (EVar (Var "j"), Equal, EVar (Var "k"))),
+   SStep (Plus_Eq (Var "j", Minus, EVar (Var "k"))))),
+ ETime (EVar (Var "k"), Equal, EConst 0))
