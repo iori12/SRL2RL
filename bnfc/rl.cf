@@ -1,0 +1,45 @@
+RLBLK1. Rl ::=;
+RLBLK.  Rl ::= Rlblk ";" Rl ;
+
+RBlk1.	Rlblk ::= Label ":" From Jump;
+RBlk2.	Rlblk ::= Label ":" From Step Jump;
+
+RGoto.	Jump ::= "goto" Label;
+RIf.	Jump ::= "if" Exp "goto" Label "else" Label;
+RExit.	Jump ::= "exit";
+
+RFrom.	From ::= "from" Label;
+RFi.	From ::= "fi" Exp "from" Label "else" Label;
+REntry.	From ::= "entry";
+
+Label.	Label ::= "l" Integer;
+
+Plus_Eq. Step ::= Var Oplus "=" Exp;
+Plus_In. Step ::= Var "[" Exp "]" Oplus "=" Exp;
+Push.	 Step ::= "push" Var Var;
+Pop.	 Step ::= "pop" Var Var;
+Skip.	 Step ::= "skip";
+
+EConst. Exp ::= Integer;
+EVar.   Exp ::= Ident;
+EIn.    Exp ::= Var "[" Exp "]";
+ETime.	Exp ::= Exp Otime Exp;
+ETop.	Exp ::= "top" Var Var;
+EEmpty. Exp ::= "empty" Var Var;
+
+OPlus.      Otime ::= Oplus;
+Time. 	    Otime ::= "*";
+Div.	    Otime ::= "/";
+Equal. 	    Otime ::= "=";
+Less.	    Otime ::= "<";
+Greater.    Otime ::= ">";
+Less_Eq.    Otime ::= "<=";
+Greater_Eq. Otime ::= ">=";
+Not_Eq.	    Otime ::= "!=";
+
+Plus.  Oplus ::= "+";
+Minus. Oplus ::= "-";
+Caret. Oplus ::= "^";
+
+Var.   Var   ::=Ident;
+

@@ -1,0 +1,36 @@
+SBLK.  Srl   ::= Blk;
+
+SStep. Blk   ::= Step;
+SIf.   Blk   ::= "if" Exp "then" Blk "else" Blk "fi" Exp;
+SCon.  Blk   ::= Blk Blk;
+SFrom. Blk   ::= "from" Exp "do" Blk "loop" Blk "until" Exp;
+
+Plus_Eq. Step ::= Var Oplus "=" Exp;
+Plus_In. Step ::= Var "[" Exp "]" Oplus "=" Exp;
+Push.	 Step ::= "push" Var Var;
+Pop.	 Step ::= "pop" Var Var;
+Skip.	 Step ::= "skip";
+
+EConst. Exp ::= Integer;
+EVar.   Exp ::= Ident;
+EIn.    Exp ::= Var "[" Exp "]";
+ETime.	Exp ::= Exp Otime Exp;
+ETop.	Exp ::= "top" Var Var;
+EEmpty. Exp ::= "empty" Var Var;
+
+OPlus.      Otime ::= Oplus;
+Time. 	    Otime ::= "*";
+Div.	    Otime ::= "/";
+Equal. 	    Otime ::= "=";
+Less.	    Otime ::= "<";
+Greater.    Otime ::= ">";
+Less_Eq.    Otime ::= "<=";
+Greater_Eq. Otime ::= ">=";
+Not_Eq.	    Otime ::= "!=";
+
+Plus.  Oplus ::= "+";
+Minus. Oplus ::= "-";
+Caret. Oplus ::= "^";
+
+Var.   Var   ::=Ident;
+
