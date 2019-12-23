@@ -1,9 +1,6 @@
 メモ
 
-SRL例：
-from k=n do skip loop k-=1 from j=0 do skip loop if x[j]>x[k] then x[j] -= 1 else skip fi x[j]>=x[k] j+=1 until j=k j-=k until k=0
-
-実行例：
+実行例1:
 SRL:
 from x = 0 do skip loop x += 1 until x = 10 
 
@@ -11,44 +8,46 @@ SRL inversion:
 from x = 10 do skip loop x -= 1 until x = 0 
 
 RL:
-1: 	entry
-	goto 2
-2: 	fi x = 0 from 1 else 8
-	goto 5
-5: 	from 2
+l1: 	entry
+	goto l2
+l2: 	fi x = 0 from l1 else l6
+	goto l3
+l3: 	from l2
 	skip
-	goto 6
-6: 	from 5
-	goto 3
-7: 	from 3
+	goto l4
+l4: 	from l3
+	goto l7
+l5: 	from l7
 	x += 1
-	goto 8
-8: 	from 7
-	goto 2
-3: 	from 6
-	if x = 10 goto 4 else 7
-4: 	from 3
+	goto l6
+l6: 	from l5
+	goto l2
+l7: 	from l4
+	if x = 10 goto l8 else l5
+l8: 	from l7
 	exit
 
 RL invertsion:
-4: 	entry
-	goto 3
-3: 	fi x = 10 from 4 else 7
-	goto 6
-8: 	from 2
-	goto 7
-7: 	from 8
+l1: 	entry
+	goto l2
+l2: 	fi x = 10 from l1 else l4
+	goto l5
+l3: 	from l7
+	goto l4
+l4: 	from l3
 	x -= 1
-	goto 3
-6: 	from 3
-	goto 5
-5: 	from 6
+	goto l2
+l5: 	from l2
+	goto l6
+l6: 	from l5
 	skip
-	goto 2
-2: 	from 5
-	if x = 0 goto 1 else 8
-1: 	from 2
+	goto l7
+l7: 	from l6
+	if x = 0 goto l8 else l3
+l8: 	from l7
 	exit
+
+実行例2:
 SRL:
 from k = n do skip loop k -= 1 from j = 0 do skip loop if x[j] > x[k] then x[j] -= 1 else skip fi x[j] >= x[k]  j += 1 until j = k  j -= k until k = 0 
 
@@ -56,124 +55,107 @@ SRL inversion:
 from k = 0 do skip loop j += k from j = k do skip loop j -= 1 if x[j] >= x[k] then x[j] += 1 else skip fi x[j] > x[k]  until j = 0  k += 1 until k = n 
 
 RL:
-1: 	entry
-	goto 2
-2: 	fi k = n from 1 else 8
-	goto 5
-5: 	from 2
+l1: 	entry
+	goto l2
+l2: 	fi k = n from l1 else l20
+	goto l3
+l3: 	from l2
 	skip
-	goto 6
-6: 	from 5
-	goto 3
-7: 	from 3
+	goto l4
+l4: 	from l3
+	goto l21
+l5: 	from l21
 	k -= 1
-	goto 11
-11: 	from 7
-	goto 15
-15: 	fi j = 0 from 11 else 46
-	goto 34
-34: 	from 15
+	goto l6
+l6: 	from l5
+	goto l7
+l7: 	fi j = 0 from l6 else l17
+	goto l8
+l8: 	from l7
 	skip
-	goto 38
-38: 	from 34
-	goto 19
-42: 	from 19
-	if x[j] > x[k] goto 107 else 153
-107: 	from 42
+	goto l9
+l9: 	from l8
+	goto l18
+l10: 	from l18
+	if x[j] > x[k] goto l11 else l13
+l11: 	from l10
 	x[j] -= 1
-	goto 130
-130: 	from 107
-	goto 65
-153: 	from 42
+	goto l12
+l12: 	from l11
+	goto l15
+l13: 	from l10
 	skip
-	goto 176
-176: 	from 153
-	goto 65
-65: 	fi x[j] >= x[k] from 130 else 176
-	goto 88
-88: 	from 65
+	goto l14
+l14: 	from l13
+	goto l15
+l15: 	fi x[j] >= x[k] from l12 else l14
+	goto l16
+l16: 	from l15
 	j += 1
-	goto 46
-46: 	from 88
-	goto 15
-19: 	from 38
-	if j = k goto 23 else 42
-23: 	from 19
+	goto l17
+l17: 	from l16
+	goto l7
+l18: 	from l9
+	if j = k goto l19 else l10
+l19: 	from l18
 	j -= k
-	goto 8
-8: 	from 23
-	goto 2
-3: 	from 6
-	if k = 0 goto 4 else 7
-4: 	from 3
+	goto l20
+l20: 	from l19
+	goto l2
+l21: 	from l4
+	if k = 0 goto l22 else l5
+l22: 	from l21
 	exit
 
-RLBLK
- [RBlk (Label "1", REntry, [], RGoto (Label "2"));
-  RBlk (Label "2",
-   RFi (ETime (EVar (Var "x"), Equal, EConst 0), Label "1", Label "8"), 
-   [], RGoto (Label "5"));
-  RBlk (Label "5", RFrom (Label "2"), [Skip], RGoto (Label "6"));
-  RBlk (Label "6", RFrom (Label "5"), [], RGoto (Label "3"));
-  RBlk (Label "7", RFrom (Label "3"), [Plus_Eq (Var "x", Plus, EConst 1)],
-   RGoto (Label "8"));
-  RBlk (Label "8", RFrom (Label "7"), [], RGoto (Label "2"));
-  RBlk (Label "3", RFrom (Label "6"), [],
-   RIf (ETime (EVar (Var "x"), Equal, EConst 10), Label "4", Label "7"));
-  RBlk (Label "4", RFrom (Label "3"), [], RExit)]
-
-[Syntax.RBlk (Syntax.Label "1", Syntax.REntry, [],
-  Syntax.RGoto (Syntax.Label "2"));
- Syntax.RBlk (Syntax.Label "2",
-  Syntax.RFi
-   (Syntax.ETime (Syntax.EVar (Syntax.Var "x"), Syntax.Equal,
-     Syntax.EConst 0),
-   Syntax.Label "1", Syntax.Label "8"),
-  [], Syntax.RGoto (Syntax.Label "3"));
- Syntax.RBlk (Syntax.Label "3", Syntax.RFrom (Syntax.Label "2"),
-  [Syntax.Skip], Syntax.RGoto (Syntax.Label "6"));
- Syntax.RBlk (Syntax.Label "6", Syntax.RFrom (Syntax.Label "3"), [],
-  Syntax.RGoto (Syntax.Label "3"));
- Syntax.RBlk (Syntax.Label "7", Syntax.RFrom (Syntax.Label "3"),
-  [Syntax.Plus_Eq (Syntax.Var "x", Syntax.Plus, Syntax.EConst 1)],
-  Syntax.RGoto (Syntax.Label "8"));
- Syntax.RBlk (Syntax.Label "8", Syntax.RFrom (Syntax.Label "7"), [],
-  Syntax.RGoto (Syntax.Label "2"));
- Syntax.RBlk (Syntax.Label "3", Syntax.RFrom (Syntax.Label "6"), [],
-  Syntax.RIf
-   (Syntax.ETime (Syntax.EVar (Syntax.Var "x"), Syntax.Equal,
-     Syntax.EConst 10),
-   Syntax.Label "4", Syntax.Label "7"));
- Syntax.RBlk (Syntax.Label "4", Syntax.RFrom (Syntax.Label "3"), [],
-  Syntax.RExit)]
-
-RLBLK
- [RBlk (Label "1", REntry, [], RGoto (Label "2"));
-  RBlk (Label "2",
-   RFi (ETime (EVar (Var "x"), Equal, EConst 0), Label "1", Label "l6"), 
-   [], RGoto (Label "l3"));
-  RBlk (Label "l3", RFrom (Label "2"), [Skip], RGoto (Label "l4"));
-  RBlk (Label "l4", RFrom (Label "l3"), [], RGoto (Label "l7"));
-  RBlk (Label "l5", RFrom (Label "l7"), [Plus_Eq (Var "x", Plus, EConst 1)],
-   RGoto (Label "l6"));
-  RBlk (Label "l6", RFrom (Label "l5"), [], RGoto (Label "2"));
-  RBlk (Label "l7", RFrom (Label "l4"), [],
-   RIf (ETime (EVar (Var "x"), Equal, EConst 10), Label "l8", Label "l5"));
-  RBlk (Label "l8", RFrom (Label "l7"), [], RExit)]
-
-SFrom (ETime (EVar (Var "k"), Equal, EVar (Var "n")), SStep Skip,
- SCon (SStep (Plus_Eq (Var "k", Minus, EConst 1)),
-  SCon
-   (SFrom (ETime (EVar (Var "j"), Equal, EConst 0), SStep Skip,
-     SCon
-      (SIf
-        (ETime (EIn (Var "x", EVar (Var "j")), Greater,
-          EIn (Var "x", EVar (Var "k"))),
-        SStep (Plus_In (Var "x", EVar (Var "j"), Minus, EConst 1)),
-        SStep Skip,
-        ETime (EIn (Var "x", EVar (Var "j")), Greater_Eq,
-         EIn (Var "x", EVar (Var "k")))),
-      SStep (Plus_Eq (Var "j", Plus, EConst 1))),
-     ETime (EVar (Var "j"), Equal, EVar (Var "k"))),
-   SStep (Plus_Eq (Var "j", Minus, EVar (Var "k"))))),
- ETime (EVar (Var "k"), Equal, EConst 0))
+RL invertsion:
+l1: 	entry
+	goto l2
+l2: 	fi k = 0 from l1 else l18
+	goto l19
+l3: 	from l21
+	goto l4
+l4: 	from l3
+	j += k
+	goto l5
+l5: 	fi j = k from l4 else l13
+	goto l14
+l6: 	from l16
+	goto l7
+l7: 	from l6
+	j -= 1
+	goto l8
+l8: 	from l7
+	if x[j] >= x[k] goto l11 else l9
+l9: 	from l8
+	goto l10
+l10: 	from l9
+	skip
+	goto l13
+l11: 	from l8
+	goto l12
+l12: 	from l11
+	x[j] += 1
+	goto l13
+l13: 	fi x[j] > x[k] from l12 else l10
+	goto l5
+l14: 	from l5
+	goto l15
+l15: 	from l14
+	skip
+	goto l16
+l16: 	from l15
+	if j = 0 goto l17 else l6
+l17: 	from l16
+	goto l18
+l18: 	from l17
+	k += 1
+	goto l2
+l19: 	from l2
+	goto l20
+l20: 	from l19
+	skip
+	goto l21
+l21: 	from l20
+	if k = n goto l22 else l3
+l22: 	from l21
+	exit
