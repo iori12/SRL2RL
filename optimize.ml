@@ -54,11 +54,11 @@ in
 match rl with
 | RLBLK(x) -> RLBLK(opt2 x n)
             
-let rec opt_rl2 rl =
+let rec opt_rl rl =
   let x = opt_rl1 rl
   in
   if x = (-1,-1) then rl
-  else opt_rl2(opt3 rl x)
+  else opt_rl(opt3 rl x)
 
               (*ラベルにlをつける関数*)
 let label_rl =

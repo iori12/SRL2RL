@@ -2,11 +2,12 @@ open Syntax
 open Compiler
 open Pretty
 open Invert
-
-let srl2rl s = rl_prints(srlc s)
-let rl_inver s = rl_prints(invertr(srlc s))
+open Optimize
+   
+let srl2rl s = rl_prints(label_rl(opt_rl(srlc s)))
+let rl_inver s = rl_prints(label_rl(opt_rl(invertr(srlc s))))
 let srl_inver s = srl_prints(invert s)
-  
+let parse line = Parser.main Lexer.token (Lexing.from_string line )  
 let rec read_print () =
   print_string "->";
   flush stdout;
